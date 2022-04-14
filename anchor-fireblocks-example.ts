@@ -6,26 +6,25 @@ import * as fs from "fs";
 (async () => {
   // your secret to acess fireblocks, you need secret_key.txt in current directory
   const secret = fs.readFileSync("secret_key.txt", "utf8").toString();
-  const fb = new FireblocksSDK(secret, "<fb key>");
-  // const accountId = "0"; // some number
+  const fb = new FireblocksSDK(secret, "2399a3ce-fce0-5c98-9321-7d95b2c0136d");
+  // const account = await fb.getVaultAccountById('820');
 
-  // const accounts = await fb.getVaultAccounts();
-  const address: string = "fireblocks_account_TO_BE_REPLACED";
+  const address: string = "terra1zf8hjvuew3u99uj48a9j90xl7m4w9qd6zhz2la";
 
   const lcd = new LCDClient({
-    chainID: "tequila-0004",
-    URL: "https://tequila-lcd.terra.dev",
+    chainID: "bombay-12",
+    URL: "https://bombay-lcd.terra.dev",
   });
   const txApi = new TxAPI(lcd);
 
   const anchor = new AnchorEarn({
     chain: CHAINS.TERRA,
-    network: NETWORKS.COLUMBUS_5,
+    network: NETWORKS.BOMBAY_12,
     address: address,
   });
 
   const depositResult = await anchor.deposit({
-    amount: "100000",
+    amount: "1",
     currency: DENOMS.UST,
     customSigner: async (msgs) => {
       // create unsigned tx
@@ -47,6 +46,8 @@ import * as fs from "fs";
       const unsignedTxBuffer = Buffer.from(tx.body.toBytes());
 
       // toss this buffer around for signing
+      console.log(`start to sign tx with fireblocks`);
+
       const txCreateResult = await fb.createTransaction({
         operation: TransactionOperation.RAW,
         extraParameters: {
@@ -57,12 +58,14 @@ import * as fs from "fs";
                 content: unsignedTxBuffer,
 
                 // or your own derivation path, matching with the address
-                derivationPath: [44, 330, 0, 0, 0],
+                derivationPath: [330, 1, 820, 0, 0],
               },
             ],
           },
         },
       });
+
+      console.log(`signed data is ${txCreateResult}`);
 
       // do the signing...
 
