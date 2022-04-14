@@ -1,0 +1,18 @@
+{
+  "name": "fireblocks_terra_example",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./dist/anchor-fireblocks-example.js",
+  "scripts": {
+    "test": "npx tsc && node ./dist/anchor-fireblocks-example.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@anchor-protocol/anchor-earn": "^2.0.0",
+    "@terra-money/terra.js": "^3.0.11",
+    "fireblocks-sdk": "^2.0.0",
+    "typescript": "^4.6.3"
+  }
+}
